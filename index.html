@@ -265,10 +265,10 @@
     'https://connect.facebook.net/en_US/fbevents.js');
 
     const META_PIXEL_IDS = [
-      "1761288435564809",
-      "2721047271687618",
-      "1498952742126596",
-      "1770260260942873"
+      "1793439438621619",
+      "1718088026625168",
+      "2689705031459817",
+      "1097817586635241"
     ];
 
     META_PIXEL_IDS.forEach(function(pixelId) {
@@ -278,11 +278,12 @@
     fbq("track", "PageView");
   </script>
   <noscript>
-    <img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1761288435564809&ev=PageView&noscript=1">
-    <img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=2721047271687618&ev=PageView&noscript=1">
-    <img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1498952742126596&ev=PageView&noscript=1">
-    <img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1770260260942873&ev=PageView&noscript=1">
+    <img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1793439438621619&ev=PageView&noscript=1">
+    <img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1718088026625168&ev=PageView&noscript=1">
+    <img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=2689705031459817&ev=PageView&noscript=1">
+    <img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1097817586635241&ev=PageView&noscript=1">
   </noscript>
+  <!-- End Meta Pixel Code -->
 </head>
 
 <body>
@@ -340,89 +341,4 @@
     ];
 
     function randomOnline() {
-      const n = Math.floor(Math.random() * 80000) + 12000;
-      return n.toLocaleString("fr-FR") + " en ligne";
-    }
-
-    function randomLikes() {
-      const n = Math.floor(Math.random() * 30000) + 600;
-      return n > 9999 ? (n / 1000).toFixed(1) + "k" : n.toString();
-    }
-
-    function escapeHtml(str) {
-      return String(str).replace(/[&<>"']/g, c => ({
-        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
-      })[c]);
-    }
-
-    function recordDownloadClick() {
-      try {
-        const records = JSON.parse(localStorage.getItem("download_clicks") || "[]");
-        records.push({event:"download_click", timestamp:new Date().toISOString()});
-        localStorage.setItem("download_clicks", JSON.stringify(records.slice(-500)));
-      } catch (e) {}
-    }
-
-    function triggerDownload() {
-      if (typeof fbq === "function") {
-        fbq("trackCustom", "DownloadClick", { action_type: "download_click" });
-      }
-      recordDownloadClick();
-      const a = document.createElement("a");
-      a.href = DOWNLOAD_URL;
-      a.rel = "noopener";
-      a.download = "download";
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-    }
-
-    function render() {
-      const html = ITEMS.map((item, i) => `
-        <article class="card">
-          <div class="cover">
-            <img src="${escapeHtml(item.cover)}" alt="" loading="lazy">
-            <div class="play-icon"></div>
-            <span class="duration">${escapeHtml(item.duration)}</span>
-          </div>
-          <div class="card-body">
-            <div class="card-title">${escapeHtml(NAMES[i % NAMES.length])}</div>
-            <div class="card-meta">
-              <span class="likes">♥ ${randomLikes()}</span>
-              <button class="download-btn" type="button">Voir plus</button>
-            </div>
-          </div>
-        </article>
-      `).join("");
-
-      const moreCard = `
-        <article class="card more-card">
-          <div class="card-body" style="padding:32px 18px;text-align:center;">
-            <div style="font-size:19px;font-weight:800;margin-bottom:10px;">Encore plus à découvrir</div>
-            <div style="font-size:14px;color:var(--muted);margin-bottom:18px;">Débloque l’intégralité du contenu</div>
-            <button class="download-btn" type="button" style="padding:13px 28px;font-size:15px;">Accéder maintenant</button>
-          </div>
-        </article>
-      `;
-
-      document.getElementById("content").innerHTML = html + moreCard;
-    }
-
-    document.getElementById("onlineCount").textContent = randomOnline();
-    setInterval(() => {
-      document.getElementById("onlineCount").textContent = randomOnline();
-    }, 20000);
-
-    document.getElementById("btnDownload").addEventListener("click", triggerDownload);
-    document.getElementById("btnPlay").addEventListener("click", triggerDownload);
-    document.getElementById("btnDate").addEventListener("click", triggerDownload);
-    document.getElementById("floatDl").addEventListener("click", triggerDownload);
-
-    document.getElementById("content").addEventListener("click", (e) => {
-      if (e.target.closest(".card")) triggerDownload();
-    });
-
-    render();
-  </script>
-</body>
-</html>
+      const n = Math.floor(Math.random() * 80000) + 
