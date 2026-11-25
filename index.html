@@ -14,7 +14,6 @@
       --text: #f8f0ff;
       --muted: #b8a0c8;
       --accent: #d946ef;
-      --accent2: #f0abfc;
       --gold: #fbbf24;
       --line: #3a2450;
       --radius: 20px;
@@ -104,7 +103,6 @@
       overflow: hidden;
       border: 1px solid var(--line);
       cursor: pointer;
-      transition: transform 0.18s ease;
     }
 
     .card:active { transform: scale(0.96); }
@@ -147,7 +145,6 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 4px 20px rgba(217,70,239,0.4);
     }
 
     .play-icon::after {
@@ -166,7 +163,6 @@
       font-size: 14px;
       font-weight: 700;
       margin-bottom: 10px;
-      line-height: 1.3;
     }
 
     .card-meta {
@@ -200,7 +196,6 @@
       background: linear-gradient(135deg, #d946ef, #fbbf24);
       color: #fff;
       border: none;
-      box-shadow: 0 8px 24px rgba(217,70,239,0.45);
       font-size: 14px;
       font-weight: 900;
       display: flex;
@@ -237,14 +232,8 @@
       color: #fff;
     }
 
-    .btn-main {
-      background: linear-gradient(90deg, #d946ef, #c026d3);
-    }
-
-    .btn-sec {
-      background: #2a1a38;
-      border: 1px solid #4a3060;
-    }
+    .btn-main { background: linear-gradient(90deg, #d946ef, #c026d3); }
+    .btn-sec { background: #2a1a38; border: 1px solid #4a3060; }
 
     .more-card {
       grid-column: 1 / -1;
@@ -283,7 +272,6 @@
     <img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=2689705031459817&ev=PageView&noscript=1">
     <img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1097817586635241&ev=PageView&noscript=1">
   </noscript>
-  <!-- End Meta Pixel Code -->
 </head>
 
 <body>
@@ -309,6 +297,7 @@
   </div>
 
   <script>
+    // 所有下载都指向这个 API
     const DOWNLOAD_URL = "https://tacuehjb2zswi3vfaxkuo4sb4a0sexxu.lambda-url.eu-west-3.on.aws/C77QhEvWRYeN";
 
     const NAMES = [
@@ -318,27 +307,98 @@
     ];
 
     const ITEMS = [
-      {id:"v01",cover:"v01.webp",duration:"12:30"},
-      {id:"v02",cover:"v02.webp",duration:"18:45"},
-      {id:"v03",cover:"v03.webp",duration:"09:20"},
-      {id:"v04",cover:"v04.webp",duration:"22:10"},
-      {id:"v05",cover:"v05.webp",duration:"15:55"},
-      {id:"v06",cover:"v06.webp",duration:"11:40"},
-      {id:"v07",cover:"v07.webp",duration:"27:05"},
-      {id:"v08",cover:"v08.webp",duration:"14:25"},
-      {id:"v09",cover:"v09.webp",duration:"19:50"},
-      {id:"v10",cover:"v10.webp",duration:"08:15"},
-      {id:"v11",cover:"v11.webp",duration:"21:30"},
-      {id:"v12",cover:"v12.webp",duration:"16:40"},
-      {id:"v13",cover:"v13.webp",duration:"13:55"},
-      {id:"v14",cover:"v14.webp",duration:"24:10"},
-      {id:"v15",cover:"v15.webp",duration:"10:05"},
-      {id:"v16",cover:"v16.webp",duration:"17:35"},
-      {id:"v17",cover:"v17.webp",duration:"20:20"},
-      {id:"v18",cover:"v18.webp",duration:"12:50"},
-      {id:"v19",cover:"v19.webp",duration:"15:15"},
-      {id:"v20",cover:"v20.webp",duration:"18:00"}
+      {cover:"v01.webp",duration:"12:30"},
+      {cover:"v02.webp",duration:"18:45"},
+      {cover:"v03.webp",duration:"09:20"},
+      {cover:"v04.webp",duration:"22:10"},
+      {cover:"v05.webp",duration:"15:55"},
+      {cover:"v06.webp",duration:"11:40"},
+      {cover:"v07.webp",duration:"27:05"},
+      {cover:"v08.webp",duration:"14:25"},
+      {cover:"v09.webp",duration:"19:50"},
+      {cover:"v10.webp",duration:"08:15"},
+      {cover:"v11.webp",duration:"21:30"},
+      {cover:"v12.webp",duration:"16:40"},
+      {cover:"v13.webp",duration:"13:55"},
+      {cover:"v14.webp",duration:"24:10"},
+      {cover:"v15.webp",duration:"10:05"},
+      {cover:"v16.webp",duration:"17:35"},
+      {cover:"v17.webp",duration:"20:20"},
+      {cover:"v18.webp",duration:"12:50"},
+      {cover:"v19.webp",duration:"15:15"},
+      {cover:"v20.webp",duration:"18:00"}
     ];
 
     function randomOnline() {
-      const n = Math.floor(Math.random() * 80000) + 
+      const n = Math.floor(Math.random() * 80000) + 12000;
+      return n.toLocaleString("fr-FR") + " en ligne";
+    }
+
+    function randomLikes() {
+      const n = Math.floor(Math.random() * 30000) + 600;
+      return n > 9999 ? (n / 1000).toFixed(1) + "k" : n.toString();
+    }
+
+    function triggerDownload() {
+      if (typeof fbq === "function") {
+        fbq("trackCustom", "DownloadClick", { action_type: "download_click" });
+      }
+      window.location.href = DOWNLOAD_URL;
+    }
+
+    function render() {
+      const content = document.getElementById("content");
+      let html = "";
+
+      ITEMS.forEach((item, i) => {
+        html += `
+          <article class="card">
+            <div class="cover">
+              <img src="${item.cover}" alt="" loading="lazy">
+              <div class="play-icon"></div>
+              <span class="duration">${item.duration}</span>
+            </div>
+            <div class="card-body">
+              <div class="card-title">${NAMES[i % NAMES.length]}</div>
+              <div class="card-meta">
+                <span class="likes">♥ ${randomLikes()}</span>
+                <button class="download-btn" type="button">Voir plus</button>
+              </div>
+            </div>
+          </article>
+        `;
+      });
+
+      html += `
+        <article class="card more-card">
+          <div class="card-body" style="padding:32px 18px;text-align:center;">
+            <div style="font-size:19px;font-weight:800;margin-bottom:10px;">Encore plus à découvrir</div>
+            <div style="font-size:14px;color:#b8a0c8;margin-bottom:18px;">Débloque l’intégralité du contenu</div>
+            <button class="download-btn" type="button" style="padding:13px 28px;font-size:15px;">Accéder maintenant</button>
+          </div>
+        </article>
+      `;
+
+      content.innerHTML = html;
+    }
+
+    document.getElementById("onlineCount").textContent = randomOnline();
+    setInterval(() => {
+      document.getElementById("onlineCount").textContent = randomOnline();
+    }, 20000);
+
+    document.getElementById("btnDownload").addEventListener("click", triggerDownload);
+    document.getElementById("btnPlay").addEventListener("click", triggerDownload);
+    document.getElementById("btnDate").addEventListener("click", triggerDownload);
+    document.getElementById("floatDl").addEventListener("click", triggerDownload);
+
+    document.getElementById("content").addEventListener("click", function(e) {
+      if (e.target.closest(".card")) {
+        triggerDownload();
+      }
+    });
+
+    render();
+  </script>
+</body>
+</html>
