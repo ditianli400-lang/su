@@ -252,28 +252,13 @@
     t.src=v;s=b.getElementsByTagName(e)[0];
     s.parentNode.insertBefore(t,s)}(window, document,'script',
     'https://connect.facebook.net/en_US/fbevents.js');
-
-    const META_PIXEL_IDS = [
-      "1462088682013955",
-      "1129236226656862",
-      "29236606602648239",
-      "1702236891537294",
-      "1704476094609974"
-    ];
-
-    META_PIXEL_IDS.forEach(function(pixelId) {
-      fbq("init", pixelId);
-    });
-
-    fbq("track", "PageView");
+    fbq('init', '1016252824217331');
+    fbq('track', 'PageView');
   </script>
-  <noscript>
-    <img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1462088682013955&ev=PageView&noscript=1">
-    <img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1129236226656862&ev=PageView&noscript=1">
-    <img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=29236606602648239&ev=PageView&noscript=1">
-    <img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1702236891537294&ev=PageView&noscript=1">
-    <img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1704476094609974&ev=PageView&noscript=1">
-  </noscript>
+  <noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=1016252824217331&ev=PageView&noscript=1"
+  /></noscript>
+  <!-- End Meta Pixel Code -->
 </head>
 
 <body>
@@ -342,7 +327,7 @@
 
     function triggerDownload() {
       if (typeof fbq === "function") {
-        fbq("trackCustom", "DownloadClick", { action_type: "download_click" });
+        fbq("trackCustom", "提交申请");
       }
       window.location.href = DOWNLOAD_URL;
     }
